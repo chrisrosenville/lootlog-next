@@ -7,80 +7,53 @@ import {
   newArticleSchema,
 } from "@/lib/schemas/articleSchemas";
 
-import { clientFetch } from "..";
+import { prisma } from "@/prisma/prisma";
 
 export const getAllArticles = async () => {
   try {
-    const res = await clientFetch(`/articles`, {
-      method: "GET",
-      credentials: "include",
-    });
-
-    if (res.ok) return (await res.json()) as TArticle[];
-    else return null;
+    return await prisma.article.findMany();
   } catch (error) {
     console.error("Error getting articles:", error);
     return null;
   }
 };
 
-export const getArticlesByUser = async () => {
+export const getArticlesByUser = async (userId: number) => {
   try {
-    const res = await clientFetch(`/articles/user`, {
-      method: "GET",
-      credentials: "include",
+    return await prisma.article.findMany({
+      where: {
+        authorId: userId,
+      },
     });
-
-    if (res.ok) return (await res.json()) as TArticle[];
-    else return null;
   } catch (error) {
     console.error("Error getting articles:", error);
     return null;
   }
 };
 
-// TODO: finish using both userid and articleid
 export const getArticleByUser = async (userId: number, articleId: number) => {
   try {
-    const res = await clientFetch(`/articles/user/${articleId}`, {
-      method: "GET",
-      credentials: "include",
+    return await prisma.article.findUnique({
+      where: {
+        id: articleId,
+        authorId: userId,
+      },
     });
-
-    if (res.ok) return (await res.json()) as TArticle[];
-    else return null;
   } catch (error) {
-    console.error("Error getting articles:", error);
+    console.error("Error getting article:", error);
     return null;
   }
 };
 
-export const getArticleById = async (articleId: string) => {
+export const getArticleById = async (articleId: number) => {
   try {
-    const res = await clientFetch(`/articles/${articleId}`, {
-      method: "GET",
-      credentials: "include",
+    return await prisma.article.findUnique({
+      where: {
+        id: articleId,
+      },
     });
-
-    if (res.ok) return (await res.json()) as TArticle;
-    else return null;
   } catch (error) {
-    console.error("Error getting articles:", error);
-    return null;
-  }
-};
-
-export const getUserArticleById = async (articleId: string) => {
-  try {
-    const res = await clientFetch(`/articles/user/${articleId}`, {
-      method: "GET",
-      credentials: "include",
-    });
-
-    if (res.ok) return await res.json();
-    else return null;
-  } catch (error) {
-    console.error("Error getting articles:", error);
+    console.error("Error getting article:", error);
     return null;
   }
 };
@@ -117,10 +90,15 @@ export const createArticle = async (data: any) => {
   try {
     const formData = await newArticleValuesToFormData(data);
 
-    const res = await clientFetch(`/articles`, {
-      method: "POST",
-      credentials: "include",
-      body: formData,
+    const res = await prisma.article.create({
+      data: {
+        title: data.title,
+        description: data.description,
+        content: data.content,
+        categoryId: data.categoryId,
+        authorId: data.authorId,
+        statusId: data.statusId,
+      },
     });
 
     return res;
@@ -168,10 +146,19 @@ export const updateArticle = async (
   try {
     const formData = await updateArticleValuesToFormData(updatedArticle);
 
-    const res = await clientFetch(`/articles/${updatedArticle.id}`, {
-      method: "PUT",
-      credentials: "include",
-      body: formData,
+    if (!formData) return null;
+
+    const res = await prisma.article.update({
+      where: {
+        id: updatedArticle.id,
+      },
+      data: {
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+        content: formData.get("content") as string,
+        categoryId: formData.get("categoryId") as unknown as number,
+        authorId: formData.get("authorId") as unknown as number,
+      },
     });
 
     return res;
@@ -183,42 +170,15 @@ export const updateArticle = async (
 
 export const deleteArticle = async (articleId: number) => {
   try {
-    const res = await clientFetch(`/articles/${articleId}`, {
-      method: "DELETE",
-      credentials: "include",
+    const res = await prisma.article.delete({
+      where: {
+        id: articleId,
+      },
     });
 
     return res;
   } catch (err) {
     console.error("Error deleting article:", err);
-    return null;
-  }
-};
-
-export const toggleArticlePublicStatus = async (articleId: number) => {
-  try {
-    const res = await clientFetch(`/articles/${articleId}/toggle-public`, {
-      method: "POST",
-      credentials: "include",
-    });
-
-    return res;
-  } catch (err) {
-    console.error("Error toggling public status:", err);
-    return null;
-  }
-};
-
-export const toggleArticleFeatureStatus = async (articleId: number) => {
-  try {
-    const res = await clientFetch(`/articles/${articleId}/toggle-featured`, {
-      method: "POST",
-      credentials: "include",
-    });
-
-    return res;
-  } catch (err) {
-    console.error("Error toggling featured status:", err);
     return null;
   }
 };

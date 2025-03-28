@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { TArticle } from "@/types/article.types";
+import { TArticle } from "@/types/article";
 
 import { PaginationGridItem } from "./PaginationGridItem";
 import { PageTitle } from "@/components/page-title/PageTitle";

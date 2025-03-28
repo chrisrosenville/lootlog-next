@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getCurrentUser } from "@/lib/db/users";
+// import { getCurrentUser } from "@/lib/db/users";
 
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
@@ -31,10 +31,10 @@ const formSchema = z.object({
 });
 
 export const UserProfileForm = () => {
-  const { data: user, isLoading } = useQuery({
-    queryKey: ["user"],
-    queryFn: getCurrentUser,
-  });
+  // const { data: user, isLoading } = useQuery({
+  //   queryKey: ["user"],
+  //   queryFn: getCurrentUser,
+  // });
 
   const [formInitialized, setFormInitialized] = useState(false);
 
@@ -48,17 +48,17 @@ export const UserProfileForm = () => {
     },
   });
 
-  useEffect(() => {
-    if (user && !formInitialized) {
-      form.reset({
-        userName: user.userName || "",
-        firstName: user.firstName || "",
-        lastName: user.lastName || "",
-        email: user.email || "",
-      });
-      setFormInitialized(true);
-    }
-  }, [user, form, formInitialized]);
+  // useEffect(() => {
+  //   if (user && !formInitialized) {
+  //     form.reset({
+  //       userName: user.userName || "",
+  //       firstName: user.firstName || "",
+  //       lastName: user.lastName || "",
+  //       email: user.email || "",
+  //     });
+  //     setFormInitialized(true);
+  //   }
+  // }, [user, form, formInitialized]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -74,7 +74,7 @@ export const UserProfileForm = () => {
     }
   }
 
-  if (isLoading) return <LoadingScreen />;
+  // if (isLoading) return <LoadingScreen />;
 
   return (
     <Form {...form}>

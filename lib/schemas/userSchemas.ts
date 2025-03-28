@@ -13,9 +13,7 @@ export const userSchema = z.object({
 
 export const signUpSchema = z.object({
   userName: z.string().min(2).max(50),
-  firstName: z.string().min(2).max(50),
-  lastName: z.string().min(2).max(50),
+  fullName: z.string().min(2).max(50),
   email: z.string().email(),
   password: z.string().min(8).max(50),
-  repeatPassword: z.string().min(8).max(50),
 });

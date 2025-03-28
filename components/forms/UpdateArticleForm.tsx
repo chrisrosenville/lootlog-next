@@ -32,7 +32,7 @@ import {
 } from "../ui/select";
 
 import { Button } from "../ui/button";
-import { TArticle } from "@/types/article.types";
+import { TArticle } from "@/types/article";
 import { Message } from "../ui/message";
 
 const DynamicArticleEditor = dynamic(

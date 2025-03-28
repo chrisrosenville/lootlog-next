@@ -1,4 +1,4 @@
-import { getFrontpageArticles } from "@/lib/db/articles/actions";
+import { getFrontpageArticles } from "@/services/articles";
 
 import { LoadingScreen } from "@/components/ui/loading";
 import { FeaturedSection } from "@/components/sections/featured/FeaturedSection";
@@ -10,40 +10,38 @@ import { Footer } from "@/components/footer/Footer";
 export default async function Home() {
   const articles = await getFrontpageArticles();
 
-  if (!articles?.articles) return <LoadingScreen />;
+  if (!articles) return <LoadingScreen />;
 
-  const latest = articles?.articles.slice(0, 4);
-  const newsArticles = articles?.articles
-    .slice(4)
-    .filter((article) => article.category?.name === "news");
-  const reviewArticles = articles?.articles
-    .slice(4)
-    .filter((article) => article.category?.name === "review");
-  const techArticles = articles?.articles
-    .slice(4)
-    .filter((article) => article.category?.name === "tech");
-
-  console.log(reviewArticles);
+  console.log(articles);
 
   return (
     <>
       <main className="mx-auto flex w-full max-w-siteWidth flex-col gap-4 p-4">
         <Welcome />
-        <FeaturedSection featured={articles.featured} articles={latest} />
+        <FeaturedSection
+          featured={articles.slice(0, 1)}
+          articles={articles.slice(1, 4)}
+        />
         <CategoryPreviewSection
           sectionTitle="News"
           route="/news"
-          articles={newsArticles}
+          articles={articles.filter(
+            (article) => article.category.name === "news",
+          )}
         />
         <CategoryPreviewSection
           sectionTitle="Reviews"
           route="/reviews"
-          articles={reviewArticles}
+          articles={articles.filter(
+            (article) => article.category.name === "review",
+          )}
         />
         <CategoryPreviewSection
           sectionTitle="Tech"
           route="/tech"
-          articles={techArticles}
+          articles={articles.filter(
+            (article) => article.category.name === "tech",
+          )}
         />
         <Newsletter />
       </main>

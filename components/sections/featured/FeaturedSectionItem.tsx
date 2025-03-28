@@ -1,4 +1,4 @@
-import { TArticle } from "@/types/article.types";
+import { TArticle } from "@/types/article";
 import Image from "next/image";
 import Link from "next/link";
 

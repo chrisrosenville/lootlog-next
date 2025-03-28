@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { TUser } from "@/types/user.types";
+import { TUser } from "@/types/user";
 import { userSchema } from "@/lib/schemas/userSchemas";
 import { updateUser } from "@/lib/db/users";
 

@@ -13,75 +13,86 @@ datasource db {
 }
 
 model User {
-  id        Int   @id @default(autoincrement())
-  username  String    @unique @db.VarChar(255)
-  name      String
-  email     String   @unique @db.VarChar(255)
-  password  String   @db.VarChar(255)
-  role      Role     @relation(fields: [roleId], references: [id])
-  roleId    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int       @id @default(autoincrement())
+  userName  String    @unique @db.VarChar(255)
+  fullName  String    @db.VarChar(255)
+  email     String    @unique @db.VarChar(255)
+  password  String    @db.VarChar(255)
+  role      Role      @relation(fields: [roleName], references: [name])
+  roleName  String    @default("user")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt @default(now())
   articles  Article[]
+  comments  Comment[]
 }
 
 model Role {
-  id        Int   @id @default(autoincrement())
-  name      String @db.VarChar(255)
-  createdAt DateTime @default(now())
+  id        Int       @id @default(autoincrement())
+  name      String    @unique @db.VarChar(255)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt @default(now())
   users     User[]
 }
 
 model Article {
-  id        Int   @id @default(autoincrement())
-  title     String @db.VarChar(100)
-  description String @db.VarChar(255)
-  content   String @db.Text
+  id        Int       @id @default(autoincrement())
+  title     String    @db.VarChar(100)
+  description String  @db.VarChar(255)
+  content   String    @db.Text
   image     Image?
   video     Video?
-  author    User   @relation(fields: [authorId], references: [id])
+  author    User      @relation(fields: [authorId], references: [id])
   authorId  Int
-  category  Category @relation(fields: [categoryId], references: [id])
+  category  Category  @relation(fields: [categoryId], references: [id])
   categoryId Int
-  status    Status   @relation(fields: [statusId], references: [id])
+  status    Status    @relation(fields: [statusId], references: [id])
   statusId  Int 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   comments  Comment[]
 }
 
 model Image {
-  id        Int   @id @default(autoincrement())
-  url       String @db.Text
-  article   Article @relation(fields: [articleId], references: [id])
-  articleId Int     @unique
+  id        Int       @id @default(autoincrement())
+  url       String    @db.Text
+  article   Article   @relation(fields: [articleId], references: [id])
+  articleId Int       @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt @default(now())
 }
 
 model Video {
-  id        Int   @id @default(autoincrement())
-  url       String @db.Text
-  article   Article @relation(fields: [articleId], references: [id])
-  articleId Int     @unique
+  id        Int       @id @default(autoincrement())
+  url       String    @db.Text
+  article   Article   @relation(fields: [articleId], references: [id])
+  articleId Int       @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt @default(now())
 }
 
 model Status {
-  id        Int   @id @default(autoincrement())
-  name      String @db.VarChar(255)
-  createdAt DateTime @default(now())
+  id        Int       @id @default(autoincrement())
+  name      String    @unique @db.VarChar(255)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt @default(now())
   articles  Article[]
 }
 
 model Category {
-  id        Int   @id @default(autoincrement())
-  name      String @db.VarChar(255)
-  createdAt DateTime @default(now())
+  id        Int       @id @default(autoincrement())
+  name      String    @unique @db.VarChar(255)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt @default(now())
   articles  Article[]
 }
 
 model Comment {
-  id        Int   @id @default(autoincrement())
-  content   String @db.Text
-  article   Article @relation(fields: [articleId], references: [id])
+  id        Int       @id @default(autoincrement())
+  content   String    @db.Text
+  article   Article   @relation(fields: [articleId], references: [id])
   articleId Int
-  createdAt DateTime @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt @default(now())
 }

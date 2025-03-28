@@ -1,9 +1,11 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { verifySessionToken } from "./lib/db/auth/actions";
 
 export async function middleware(req: NextRequest) {
   let res = NextResponse.next();
   let redirect = NextResponse.redirect(new URL("/sign-in", req.url));
+
+  const cookieStore = cookies();
 
   const sessionCookie = req.cookies.get("session")?.value;
 
@@ -14,7 +16,7 @@ export async function middleware(req: NextRequest) {
 
   if (sessionCookie) {
     try {
-      const isAuthenticated = await verifySessionToken(sessionCookie);
+      const isAuthenticated = (await cookieStore).get(sessionCookie);
 
       if (isAuthenticated) {
         return res;

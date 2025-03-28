@@ -5,11 +5,6 @@ import { useState } from "react";
 
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-
-import { signUp } from "@/lib/db/auth";
-import { TAuthErrorResponse } from "@/types/form.types";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,49 +18,40 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoadingSpinner } from "../ui/loading";
-import { signUpSchema } from "@/lib/schemas/userSchemas";
 
+import { register } from "@/services/auth";
+import { IRegisterCredentials } from "@/types/user";
 export const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const form = useForm<z.infer<typeof signUpSchema>>({
-    resolver: zodResolver(signUpSchema),
+  const form = useForm<IRegisterCredentials>({
     defaultValues: {
       userName: "",
-      firstName: "",
-      lastName: "",
+      fullName: "",
       email: "",
       password: "",
-      repeatPassword: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof signUpSchema>) {
+  async function onSubmit(credentials: IRegisterCredentials) {
+    setErrorMessage("");
+    setIsLoading(true);
+
     try {
-      setErrorMessage("");
-      setIsLoading(true);
+      const res = await register(credentials);
 
-      const res = await signUp(values);
-      const signUpError = (await res.json()) as TAuthErrorResponse;
-
-      console.log("Values:", values);
-      console.log("Signup response as JSON:", signUpError);
-
-      if (res.ok) {
+      if (res) {
         toast.success(
           <p className="text-neutral-950">
             Your account has been created. Please sign in.
           </p>,
         );
-        window.location.href = "/sign-in";
+        window.location.href = "/";
         return;
       } else {
-        signUpError.errors?.forEach((error) => {
-          form.setError(error.fieldName, { message: error.message });
-        });
+        setErrorMessage("Invalid form submission");
         setIsLoading(false);
-        return;
       }
     } catch (error) {
       setErrorMessage("An unknown error occurred");
@@ -122,46 +108,24 @@ export const SignUpForm = () => {
 
             <FormField
               control={form.control}
-              name="firstName"
+              name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First name</FormLabel>
+                  <FormLabel>Full name</FormLabel>
                   <FormControl>
                     <Input
                       className={
-                        form.getFieldState("firstName").error &&
-                        "border-red-600"
+                        form.getFieldState("fullName").error && "border-red-600"
                       }
                       placeholder=""
-                      autoComplete="firstname"
+                      autoComplete="fullName"
                       type="text"
                       {...field}
                     />
                   </FormControl>
-                  {/* <FormDescription>Your first name</FormDescription> */}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last name</FormLabel>
-                  <FormControl>
-                    <Input
-                      className={
-                        form.getFieldState("lastName").error && "border-red-600"
-                      }
-                      placeholder=""
-                      autoComplete="lastname"
-                      type="text"
-                      {...field}
-                    />
-                  </FormControl>
-                  {/* <FormDescription>Your last name.</FormDescription> */}
+                  <FormDescription>
+                    This will not be shown to the public
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -211,27 +175,6 @@ export const SignUpForm = () => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="repeatPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Repeat password</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder=""
-                      type="password"
-                      {...field}
-                      className={
-                        form.getFieldState("repeatPassword").error &&
-                        "border-red-600"
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <div className="pt-2">
               <Button
                 type="submit"

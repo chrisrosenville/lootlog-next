@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { TCategory } from "@/types/article.types";
+import { TCategory } from "@/types/article";
 
 import { newCategorySchema } from "@/lib/schemas/categorySchemas";
 

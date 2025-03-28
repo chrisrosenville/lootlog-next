@@ -1,4 +1,4 @@
-import { TImage } from "@/types/article.types";
+import { TImage } from "@/types/article";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 

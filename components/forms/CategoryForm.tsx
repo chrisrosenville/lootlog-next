@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 
-import { TCategory } from "@/types/article.types";
+import { TCategory } from "@/types/article";
 import { createCategory, updateCategory } from "@/lib/db/categories";
 import { newCategorySchema } from "@/lib/schemas/categorySchemas";
 

@@ -1,7 +1,7 @@
 import { SectionTitle } from "../SectionTitle";
 import { CategoryPreviewSectionItem } from "./CategoryPreviewSectionItem";
 
-import { TArticle } from "@/types/article.types";
+import { TArticle } from "@/types/article";
 
 type Props = {
   sectionTitle: string;

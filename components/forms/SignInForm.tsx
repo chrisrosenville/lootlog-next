@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { login } from "@/lib/db/auth";
+// import { login } from "@/lib/db/auth";
 
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoadingSpinner } from "@/components/ui/loading";
-import { TAuthErrorResponse } from "@/types/form.types";
 
 const formSchema = z.object({
   email: z.string().max(100),
@@ -45,19 +44,19 @@ export const SignInForm = () => {
       setErrorMessage("");
       setIsLoading(true);
 
-      const res = await login(values);
+      // const res = await login(values);
 
-      if (res.ok) {
-        toast.success(
-          <p className="text-neutral-950">You are now logged in</p>,
-        );
-        window.location.href = "/dashboard/user";
-      } else {
-        const credentialError = (await res.json()) as TAuthErrorResponse;
+      // if (res.ok) {
+      //   toast.success(
+      //     <p className="text-neutral-950">You are now logged in</p>,
+      //   );
+      //   window.location.href = "/dashboard/user";
+      // } else {
+      //   const credentialError = (await res.json()) as TAuthErrorResponse;
 
-        setErrorMessage(credentialError.message);
-        setIsLoading(false);
-      }
+      //   setErrorMessage(credentialError.message);
+      //   setIsLoading(false);
+      // }
     } catch (error) {
       setIsLoading(false);
       console.error("Form submission error", error);

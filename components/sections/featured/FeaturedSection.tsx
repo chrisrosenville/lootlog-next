@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { TArticle } from "@/types/article.types";
+import { TArticle } from "@/types/article";
 
 import { FeaturedSectionListItem } from "./FeaturedSectionItem";
 

@@ -3,8 +3,6 @@ import { useState } from "react";
 
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-import { Toaster } from "react-hot-toast";
-
 import { ModalRoot } from "@/components/modal/ModalRoot";
 
 export const Provider = ({ children }: { children: React.ReactNode }) => {
@@ -13,7 +11,6 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <ModalRoot />
-      <Toaster />
       {children}
     </QueryClientProvider>
   );

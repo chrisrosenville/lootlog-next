@@ -3,7 +3,6 @@
 import "./DashboardNavigation.css";
 
 import { useQuery } from "@tanstack/react-query";
-import { getCurrentUser } from "@/lib/db/users";
 
 // Components
 import { DashboardNavigationItem } from "./DashboardNavigationItem";
@@ -21,11 +20,6 @@ import {
 } from "react-icons/fi";
 
 export const DashboardNavigation = () => {
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: getCurrentUser,
-  });
-
   return (
     <div className="sidebar">
       {/* Navigation */}
@@ -37,7 +31,7 @@ export const DashboardNavigation = () => {
         />
 
         {/* Authors & Admins */}
-        {user?.isAdmin
+        {/* {user?.isAdmin
           ? user?.isAuthor && (
               <>
                 <DashboardNavigationItem
@@ -52,9 +46,9 @@ export const DashboardNavigation = () => {
                 />
               </>
             )
-          : null}
+          : null} */}
 
-        <DashboardNavigationItem
+        {/* <DashboardNavigationItem
           title="Likes"
           href="/user/likes"
           icon={<FiHeart />}
@@ -64,12 +58,12 @@ export const DashboardNavigation = () => {
           title="Settings"
           href="/user/settings"
           icon={<FiSettings />}
-        />
+        /> */}
 
         {/* Admin */}
-        {user?.isAdmin && (
+        {/* {user?.isAdmin && (
           <>
-            {/* Divider */}
+
             <div className="dashboard-nav-divider"></div>
 
             <DashboardNavigationItem
@@ -90,7 +84,7 @@ export const DashboardNavigation = () => {
               icon={<FiUsers />}
             />
           </>
-        )}
+        )} */}
       </ul>
     </div>
   );

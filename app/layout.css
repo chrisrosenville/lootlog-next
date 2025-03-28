@@ -1,9 +1,9 @@
+@import "../components/editor/ArticleEditor.css";
+@import "../app/article/[id]/article.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import "../components/editor/ArticleEditor.css";
-@import "../app/article/[id]/article.css";
 
 :root {
   --orange-900: #b36b00;

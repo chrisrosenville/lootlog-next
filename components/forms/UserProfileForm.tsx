@@ -22,6 +22,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useUser } from "@clerk/nextjs";
+import { Label } from "../ui/label";
 
 const formSchema = z.object({
   userName: z.string().min(2).max(50),
@@ -31,10 +33,7 @@ const formSchema = z.object({
 });
 
 export const UserProfileForm = () => {
-  // const { data: user, isLoading } = useQuery({
-  //   queryKey: ["user"],
-  //   queryFn: getCurrentUser,
-  // });
+  const { user } = useUser();
 
   const [formInitialized, setFormInitialized] = useState(false);
 
@@ -77,102 +76,55 @@ export const UserProfileForm = () => {
   // if (isLoading) return <LoadingScreen />;
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="max-w-3xl space-y-3"
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="max-w-3xl space-y-3"
+    >
+      <div>
+        <Label>Username</Label>
+        <Input
+          className="capitalize"
+          placeholder={user?.username}
+          autoComplete="username"
+          type="text"
+        />
+      </div>
+
+      <div>
+        <Label>First name</Label>
+        <Input
+          className="capitalize"
+          placeholder={user?.firstName}
+          autoComplete="first name"
+          type="text"
+        />
+      </div>
+
+      <div>
+        <Label>Last name</Label>
+        <Input
+          className="capitalize"
+          placeholder={user?.lastName}
+          autoComplete="last name"
+          type="text"
+        />
+      </div>
+
+      <div>
+        <Label>Email</Label>
+        <Input
+          placeholder={user?.emailAddresses[0].emailAddress}
+          autoComplete="email"
+          type="email"
+        />
+      </div>
+
+      <Button
+        type="submit"
+        className="bg-neutral-100 text-neutral-950 hover:bg-neutral-300"
       >
-        <FormField
-          control={form.control}
-          name="userName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input
-                  className="capitalize"
-                  placeholder=""
-                  autoComplete="user name"
-                  type="text"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="firstName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>First name</FormLabel>
-              <FormControl>
-                <Input
-                  className="capitalize"
-                  placeholder=""
-                  autoComplete="first name"
-                  type="text"
-                  {...field}
-                />
-              </FormControl>
-              {/* <FormDescription>Your first name</FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="lastName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last name</FormLabel>
-              <FormControl>
-                <Input
-                  className="capitalize"
-                  placeholder=""
-                  autoComplete="last name"
-                  type="text"
-                  {...field}
-                />
-              </FormControl>
-              {/* <FormDescription>Your last name.</FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder=""
-                  autoComplete="email"
-                  type="email"
-                  {...field}
-                />
-              </FormControl>
-              {/* <FormDescription>Your email address</FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button
-          type="submit"
-          className="bg-neutral-100 text-neutral-950 hover:bg-neutral-300"
-        >
-          Update information
-        </Button>
-      </form>
-    </Form>
+        Update information
+      </Button>
+    </form>
   );
 };

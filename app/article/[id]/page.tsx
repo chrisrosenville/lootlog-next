@@ -2,21 +2,23 @@
 import Image from "next/image";
 
 import { useQuery } from "@tanstack/react-query";
-import parse from "html-react-parser";
 
-import { getArticleById } from "@/lib/db/articles";
+// import { getArticleById } from "@/lib/db/articles";
 
 import { LoadingScreen } from "@/components/ui/loading";
 import { useParams } from "next/navigation";
 import { Footer } from "@/components/footer/Footer";
+import { renderToHTML } from "next/dist/server/render";
+import { IArticle } from "@/types/article";
 
 export default function ArticlePage() {
   const params: { id: string } = useParams();
+  const article: IArticle | null = null;
 
-  const { data: article } = useQuery({
-    queryKey: [`article/${params.id}`],
-    queryFn: async () => await getArticleById(params.id),
-  });
+  // const { data: article } = useQuery({
+  //   queryKey: [`article/${params.id}`],
+  //   queryFn: async () => await getArticleById(params.id),
+  // });
 
   if (!article) return <LoadingScreen />;
 
@@ -69,7 +71,7 @@ export default function ArticlePage() {
 
           {/* Content */}
           <div className="article-body">
-            {parse(article ? article.body : "")}
+            {/* {parse(article ? article.body : "")} */}
           </div>
         </article>
       </main>

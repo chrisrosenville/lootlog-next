@@ -21,13 +21,13 @@ import {
 
 export const DashboardNavigation = () => {
   return (
-    <div className="sidebar">
+    <div className="h-[calc(100vh-64px)] min-w-16 flex-1 border-r border-neutral-700">
       {/* Navigation */}
-      <ul>
+      <ul className="flex h-full flex-col items-center gap-2 py-4">
         <DashboardNavigationItem
           title="My account"
           href="/user"
-          icon={<FiUser />}
+          icon={<FiUser size={24} />}
         />
 
         {/* Authors & Admins */}

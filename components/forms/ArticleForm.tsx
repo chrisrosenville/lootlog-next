@@ -5,8 +5,8 @@ import dynamic from "next/dynamic";
 
 import { useQuery } from "@tanstack/react-query";
 
-import { getCategories } from "@/lib/db/categories";
-import { createArticle } from "@/lib/db/articles";
+// import { getCategories } from "@/lib/db/categories";
+// import { createArticle } from "@/lib/db/articles";
 
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
@@ -49,10 +49,10 @@ const DynamicArticleEditor = dynamic(
 );
 
 export const ArticleForm = () => {
-  const { data: categories } = useQuery({
-    queryKey: ["categories"],
-    queryFn: getCategories,
-  });
+  // const { data: categories } = useQuery({
+  //   queryKey: ["categories"],
+  //   queryFn: getCategories,
+  // });
 
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [files, setFiles] = useState<File[] | null>(null);

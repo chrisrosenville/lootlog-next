@@ -14,11 +14,11 @@ export const DashboardNavigationItem: React.FC<Props> = ({
   icon,
 }) => {
   return (
-    <li>
+    <li className="flex items-center gap-2">
       <Link prefetch={false} href={`/dashboard${href}`}>
         <>
           {icon}
-          <span>{title}</span>
+          <span className="hidden">{title}</span>
         </>
       </Link>
     </li>

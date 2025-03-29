@@ -1,11 +1,11 @@
 "use server";
 
-import NextAuth, { DefaultSession } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
 import { hashPassword } from "@/utils/password";
 import { IRegisterCredentials, ILoginCredentials } from "@/types/user";
 
 import { prisma } from "@/prisma/prisma";
+
+import { SignUp } from "@clerk/nextjs";
 
 export const login = async (credentials: ILoginCredentials) => {
   try {
@@ -23,12 +23,13 @@ export const login = async (credentials: ILoginCredentials) => {
     return userWithoutPassword;
   } catch (error) {
     console.error("Error getting user details:", error);
+    return null;
   }
 };
 
 export const register = async (credentials: IRegisterCredentials) => {
   try {
-    const hashedPassword = await hashPassword(credentials.password);
+    const attemptRegistration = await SignUp();
 
     const user = await prisma.user.create({
       data: {
@@ -48,21 +49,6 @@ export const register = async (credentials: IRegisterCredentials) => {
     console.error("Error creating user:", error);
   }
 };
-
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: number;
-      username: string;
-      fullName: string;
-      email: string;
-      password: string;
-      roleName: string;
-      createdAt: Date;
-      updatedAt: Date;
-    } & DefaultSession["user"];
-  }
-}
 
 // export async function signUp(data: TSignupCredentials) {
 //   const response = await clientFetch(`/auth/sign-up`, {

@@ -1,16 +1,14 @@
-import "./DashboardLayout.css";
-
 import { DashboardNavigation } from "@/components/dashboard/navigation/DashboardNavigation";
 
-type Props = {
+interface Props {
   children: React.ReactNode;
-};
+}
 
 const DashboardLayout = async ({ children }: Props) => {
   return (
-    <div className="dashboard-page">
+    <div className="flex h-full w-full flex-1">
       <DashboardNavigation />
-      <div className="dashboard-content">{children}</div>
+      <div className="w-full">{children}</div>
     </div>
   );
 };

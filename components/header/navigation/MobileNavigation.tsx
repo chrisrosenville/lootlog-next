@@ -26,7 +26,7 @@ export const MobileNavigation = () => {
       <OutsideClickContainer
         onClose={() => setIsMenuOpen(false)}
         isOpen={isMenuOpen}
-        className={`bg-dark700 top-header absolute left-0 z-[80] flex w-full flex-col p-4 transition-[height] delay-0 duration-300 ease-in-out ${
+        className={`absolute left-0 top-header z-[80] flex w-full flex-col bg-dark700 p-4 transition-[height] delay-0 duration-300 ease-in-out ${
           isMenuOpen ? "h-screen pt-10 sm:h-auto sm:pt-4" : "h-0"
         }`}
       >
